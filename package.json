@@ -1,0 +1,29 @@
+{
+  "name": "mongoose-foreign-ref",
+  "version": "1.0.0",
+  "description": "Mongoose plugin enforcing existance of references to external models",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test/**/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sw360cab/mongoose-external-ref.git"
+  },
+  "keywords": [
+    "mongoose",
+    "mongo",
+    "plugin",
+    "externalRef",
+    "foreign"
+  ],
+  "author": "Sergio Matone <sw360cab@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sw360cab/mongoose-external-ref/issues"
+  },
+  "homepage": "https://github.com/sw360cab/mongoose-external-ref#readme"
+}

@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha test/**/*.test.js"
+    "test": "mocha 'test/**/*.test.js' --exit"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,10 @@
     "externalRef",
     "foreign"
   ],
+  "devDependencies": {
+    "mocha": "^8.x",
+    "mongoose": "^5.x"
+  },
   "author": "Sergio Matone <sw360cab@gmail.com>",
   "license": "MIT",
   "bugs": {

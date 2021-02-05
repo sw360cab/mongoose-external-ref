@@ -107,6 +107,13 @@ describe('Basic Plugin Test', function() {
       assert(savedBand != null);
     });
   
+    it('create an empty external ref', async function() {
+      let savedBand = await Band.create( {lead: singer._id, 
+        members: []
+      } );
+      assert(savedBand != null);
+    });
+  
     it('fail creating items with unexisting ref', async function() {
       await assert.rejects( Band.create({
         members: [bass._id, mongoose.Types.ObjectId()]

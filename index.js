@@ -1,33 +1,21 @@
 'use strict';
 
 /**
- * 
- * @param {String} path Path name of external field 
- * @return Value retrieved
- */
-const getExternalFieldSingleValue = function(path) {
-  let self = this
-  if (this.$op === 'save') return this[path].length ? this[path].map(p => p._id) : this[path];
-  return Object.keys(this.getUpdate()).map( (upKey) => self.getUpdate()[upKey][path]);
-};
-
-/**
  * Retrieve values of external field, dealing with single values or array of values.
+ * Different behaviour expected in case of save or update.
  * In any case an array is returned.
  * 
  * @param {Object} schema Reference schema
  * @param {String} path Path name of external field
  * @return {Array} Array of retrieved value
  */
-const getExternalFieldValues = function(schema,path) {
-  let  update 
-  if (schema.paths[path].$isMongooseArray) {
-    // return this[path].map(p => p._id);
-    if (this.$op === 'save') return this[path].length ? this[path].map(p => p._id) : this[path];
-    update = this.getUpdate();
-    return Object.keys(update).map( (upKey) => update[upKey][path]);
+const getExternalFieldValues = function(schema, path) {
+  if (this.$op === 'save') {
+    return schema.paths[path].$isMongooseArray && this[path].hasOwnProperty('length') ? 
+      this[path].map(p => p._id) : [this[path]];
   }
-  return [getExternalFieldSingleValue.call(this, path)].flat();
+  let update = this.getUpdate();
+  return Object.keys(update).map( (upKey) => update[upKey][path]);
 };
 
 /**
@@ -69,7 +57,7 @@ module.exports = function foreingRefValidator(schema, models){
         model = typeof modelRef === 'string' ? models[ modelRef ] : modelRef;
         if (!model) throw new Error("Model referenced does not exist.");
         // retrieve values of external fields
-        values = getExternalFieldValues.call(self, schema,path);
+        values = getExternalFieldValues.call(self,schema,path);
         return Promise.all( values.map( async (value) => {
           if (await model.findById(value) === null) {
             throw new Error(`Invalid reference id to document in model` + 

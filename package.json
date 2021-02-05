@@ -1,7 +1,7 @@
 {
-  "name": "mongoose-foreign-ref",
+  "name": "mongoose-external-ref",
   "version": "1.0.0",
-  "description": "Mongoose plugin enforcing existance of references to external models",
+  "description": "Mongoose plugin allowing references to external models in documents to be forcedly consistent",
   "main": "index.js",
   "directories": {
     "test": "test"

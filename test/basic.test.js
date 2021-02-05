@@ -56,7 +56,7 @@ describe('Basic Plugin Test', function() {
     });
   
     it('fail creating items with unexisting ref', async function() {
-      assert.rejects( Profile.create( {username: "foo", image: mongoose.Types.ObjectId()} ) );
+      await assert.rejects( Profile.create( {username: "foo", image: mongoose.Types.ObjectId()} ) );
     });
 
     it('update item with existing ref', async function() {
@@ -70,7 +70,7 @@ describe('Basic Plugin Test', function() {
       let savedImage = await Image.create({url: "http://example.com/image.jpg"});
       let savedProfile = await Profile.create( {username: "foo"});
       await Image.findByIdAndDelete(savedImage._id);
-      assert.rejects( savedProfile.updateOne({$set: {image: savedImage._id}})) 
+      await assert.rejects( savedProfile.updateOne({$set: {image: savedImage._id}})) 
     });
 
   });
@@ -108,11 +108,9 @@ describe('Basic Plugin Test', function() {
     });
   
     it('fail creating items with unexisting ref', async function() {
-      // assert.rejects( Band.create({
-      //   members: [bass._id, mongoose.Types.ObjectId()]
-      // }));
-      return Band.create({
-        members: [bass._id, mongoose.Types.ObjectId()] })
+      await assert.rejects( Band.create({
+        members: [bass._id, mongoose.Types.ObjectId()]
+      }));
     });
 
     it('not fail creating items with unexisting ref', async function() {
@@ -152,16 +150,16 @@ describe('Basic Plugin Test', function() {
       done();
     });
 
+    it('fail creating items with unexisting ref', async function() {
+      await assert.rejects( Car.create({ engine: mongoose.Types.ObjectId() }) );
+    });
+
     it('create items with existing ref', async function() {
       let savedFuel = await Fuel.create({octane: 98});
       let savedEngine = await Engine.create({brand: "Ferrari", horsepower: 200, 
         maxSpeed: 300, fuelType: savedFuel})
       let savedProfile = await Car.create( {name: "FF", engine: savedEngine._id} );
       assert(savedProfile != null);
-    });
-  
-    it('fail creating items with unexisting ref', async function() {
-      assert.rejects( Car.create({ engine: mongoose.Types.ObjectId() }) );
     });
 
   });

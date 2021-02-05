@@ -43,7 +43,7 @@ and Schema is like:
     });
 
 If `ref` property in `lead` property would be expressed as String ('User'), the previous would not have worked and
-[Option 2](#Option 2: `ref` as Model) would be the only possibility.
+[Option 2](#option-2-ref-as-model) would be the only possibility.
 
 ## Reasons behind
 

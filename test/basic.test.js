@@ -70,7 +70,7 @@ describe('Basic Plugin Test', function() {
       let savedImage = await Image.create({url: "http://example.com/image.jpg"});
       let savedProfile = await Profile.create( {username: "foo"});
       await Image.findByIdAndDelete(savedImage._id);
-      await assert.rejects( savedProfile.updateOne({$set: {image: savedImage._id}})) 
+      await assert.rejects( savedProfile.updateOne({$set: {image: savedImage._id}}));
     });
 
   });
@@ -113,11 +113,33 @@ describe('Basic Plugin Test', function() {
       }));
     });
 
-    it('not fail creating items with unexisting ref', async function() {
+    it('not fail creating items with unexisting ref when strict reference is not required', async function() {
       let savedBand = await Band.create( {lead:  mongoose.Types.ObjectId(),
         members: [bass._id, drums._id]
       } );
-      assert(savedBand != null)
+      assert(savedBand != null);
+    });
+
+    it('update item with valid ref', async function() {
+      let savedBand = await Band.create( {lead:  mongoose.Types.ObjectId(),
+        members: [bass._id]
+      } );
+      await savedBand.updateOne({$push: {'members': drums._id } }); 
+    });
+
+    it('update item with valid ref', async function() {
+      let savedBand = await Band.create( {lead:  mongoose.Types.ObjectId(),
+        members: [bass._id]
+      } );
+      await savedBand.updateOne({$push: {'members': drums._id } }); 
+    });
+
+    it('not update item with ref of removed item', async function() {
+      let savedBand = await Band.create( {lead:  mongoose.Types.ObjectId(),
+        members: [bass._id]
+      } );
+      await User.findByIdAndDelete(drums._id);
+      await assert.rejects( savedBand.updateOne({$push: {'members': drums._id } }));
     });
 
   });
